@@ -87,7 +87,22 @@ app.put('/todos/:id', function (req, res) {
 
     res.status(201).send('/todos/' + todo.id);
 });
+//deleting a todo item
+app.delete('/todos/:id', function (req, res, next) {
+        let id = req.params.id,
+            body = todos[id],
+            err;
 
+        if (!body) {
+            err = new Error('Todo not found');
+            err.status = 404;
+            return next(err);
+        }
+
+        delete todos[id];
+
+        res.status(204).send("Todo item deleted");
+    });
 
 app.listen(8000 , function () {
     console.log("Crud Rest API");

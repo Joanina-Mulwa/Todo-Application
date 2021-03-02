@@ -3,19 +3,20 @@ const app = express();
 app.use(express.json());
 
 //CRUD REST API
-//List items
+
+//List todo items
 //GET /todos
 
-//list one item
+//list one todo item
 //GET /todos/:id
 
-//Creating a new item to db
+//Creating a new todo item to db
 //POST /todos
 
-//Editing a item
+//Editing a todo item
 //PUT /todos/:id
 
-//Deleting an item from db
+//Deleting a todo item from db
 //delete /todos/:id
 
 let todos= [
@@ -35,7 +36,7 @@ let todos= [
     }
 ]
 
-//Listing all todos
+//Listing all todo items
 app.get('/todos', function (req, res) {
 
     console.log("my todos", todos);
@@ -43,7 +44,7 @@ app.get('/todos', function (req, res) {
 
 })
 
-//listing a single todo
+//listing a single todo item
 app.get('/todos/:id', function (req, res) {
     let id = req.params.id
     let todo = todos.find(function (todo){
@@ -59,7 +60,7 @@ app.get('/todos/:id', function (req, res) {
 })
 
 
-//creating new item
+//creating new todo item
 app.post('/todos', function (req, res) {
 
     console.log("request has a body", req.body);
@@ -69,6 +70,24 @@ app.post('/todos', function (req, res) {
     return res.status(200).send("okay, todo created");
 
 })
+
+//editing a todo item
+app.put('/todos/:id', function (req, res) {
+    let todo = req.body,
+        id = req.params.id,
+        exists = todos[id];
+
+    todo.id = id;
+    todos[id] = todo;
+    todos.push(todo);
+
+    if (exists) {
+        return res.status(204).send("todos updated");
+    }
+
+    res.status(201).send('/todos/' + todo.id);
+});
+
 
 app.listen(8000 , function () {
     console.log("Crud Rest API");

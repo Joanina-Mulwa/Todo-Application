@@ -1,5 +1,6 @@
-const express = require('express');
+const express = require ('express');
 const app = express();
+app.use(express.json());
 
 //CRUD REST API
 //List items
@@ -34,10 +35,26 @@ let todos= [
     }
 ]
 
-app.get('/todos' ,function (req, res) {
+//Listing all todos
+app.get('/todos', function (req, res) {
 
     console.log("my todos", todos);
-    return res.send(todos)
+    return res.status(200).send(todos);
+
+})
+
+//listing a single todo
+app.get('/todos/:id', function (req, res) {
+    let id = req.params.id
+    let todo = todos.find(function (todo){
+        return todo.id === parseInt(id);
+    })
+    if (!todo){
+        return res.status(404).send("todo item not found")
+    }
+
+    console.log("todo", todo);
+    return res.send(todo);
 
 })
 

@@ -58,6 +58,18 @@ app.get('/todos/:id', function (req, res) {
 
 })
 
+
+//creating new item
+app.post('/todos', function (req, res) {
+
+    console.log("request has a body", req.body);
+    let newTodo = req.body;
+    todos.push(newTodo);
+
+    return res.status(200).send("okay, todo created");
+
+})
+
 app.listen(8000 , function () {
     console.log("Crud Rest API");
 })
